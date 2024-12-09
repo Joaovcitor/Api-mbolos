@@ -8,21 +8,44 @@ if (process.env.NODE_ENV === "test") {
   sequelize = new Sequelize({
     dialect: "sqlite",
     storage: process.env.DB_STORAGE,
-    logging: false // Desativa logs de SQL para testes
+    logging: false
   });
-} else {
+} else if (process.env.NODE_ENV === "production") {
+  require("dotenv").config({ path: ".env.production" });
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PASSWORD,
     {
       host: process.env.DB_HOST,
-      port: 3306,
+      port: process.env.DB_PORT || 3306,
       dialect: process.env.DB_DIALECT,
       timezone: "-03:00",
       dialectOptions: {
-        connectTimeout: 60000 // 60 segundos
-      }
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        },
+        connectTimeout: 60000
+      },
+      logging: false
+    }
+  );
+} else {
+  require("dotenv").config();
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+    {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT || 3306,
+      dialect: process.env.DB_DIALECT,
+      timezone: "-03:00",
+      dialectOptions: {
+        connectTimeout: 60000
+      },
+      logging: console.log
     }
   );
 }

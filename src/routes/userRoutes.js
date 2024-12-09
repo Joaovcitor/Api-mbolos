@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const checkDatas = require("../middlewares/checkDataUserCreate");
-const { Store } = require("../controllers/Users");
+const UsersController = require("../controllers/UsersController");
 
-router.post("/criar", checkDatas, Store);
+router.post("/criar", checkDatas, UsersController.Store);
 
 module.exports = router;

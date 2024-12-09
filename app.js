@@ -1,15 +1,16 @@
 const express = require("express");
-const { sequelize } = require("./src/config/conn.js");
+const { sequelize } = require("./src/config/db.js");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
+const { config } = require("dotenv");
 const cors = require("cors");
 const helmet = require("helmet");
+
 const path = require("path");
 const os = require("os");
 
-dotenv.config();
+config();
 
 const app = express();
 
@@ -78,8 +79,10 @@ class Server {
 
   configureRoutes() {
     const userRoute = require("./src/routes/userRoutes.js");
+    const productRoute = require("./src/routes/productRoutes.js");
 
     this.app.use("/usuario", userRoute);
+    this.app.use("/produtos", productRoute);
   }
 
   startServer() {

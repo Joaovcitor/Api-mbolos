@@ -13,6 +13,10 @@ function checkData(req, res, next) {
     return res.status(400).json({ errors: "Nome não pode ficar em branco" });
   }
 
+  if (validator.isEmpty(telephone)) {
+    return res.status(400).json({ errors: "Nome não pode ficar em branco" });
+  }
+
   next();
 }
 
